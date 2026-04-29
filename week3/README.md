@@ -3,7 +3,7 @@
 ## 目的
 
 Go標準ライブラリの `net/http` を使い、HTTP APIサーバを作る。  
-JSONレスポンス、HTTPメソッド分岐、クエリパラメータ、簡易CRUD APIの基礎を理解する。
+JSONレスポンス、HTTPメソッド分岐、クエリパラメータ、パスパラメータ相当の処理、簡易CRUD APIの基礎を理解する。
 
 ## 使用教材
 
@@ -192,11 +192,12 @@ curl -X DELETE http://localhost:8080/items
 #### 仕様
 
 作成するエンドポイント:
-|Method|Path|内容|
-|------|------|------|
-|GET|`/todos`|Todo一覧取得|
-|POST|`/todos`|Todo作成|
-|GET|`/todos/{id}`|Todo詳細取得|
+
+| Method | Path          | 内容         |
+| ------ | ------------- | ------------ |
+| GET    | `/todos`      | Todo一覧取得 |
+| POST   | `/todos`      | Todo作成     |
+| GET    | `/todos/{id}` | Todo詳細取得 |
 
 Todoの構造:
 

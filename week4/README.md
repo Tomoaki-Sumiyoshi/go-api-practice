@@ -103,7 +103,7 @@ go run ./week4/01-layered-api
 
 異常時レスポンス:
 
-```
+```json
 {
   "error": "title is required"
 }
