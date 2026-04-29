@@ -78,3 +78,163 @@ URL: https://pkg.go.dev/net/http
 ```bash
 go run ./week4/01-layered-api
 ```
+
+### 02-validation-errors
+
+`POST /todos` で空titleなら `400 Bad Request` を返す。
+
+#### 仕様
+
+正常リクエスト:
+
+```json
+{
+  "title": "Learn Go"
+}
+```
+
+異常リクエスト:
+
+```json
+{
+  "title": ""
+}
+```
+
+異常時レスポンス:
+
+```
+{
+  "error": "title is required"
+}
+```
+
+#### 解けるようになる教材到達点
+
+- Go公式 net/http package の `ResponseWriter`、ステータスコード確認後
+
+#### 実行例
+
+```bash
+go run ./week4/02-validation-errors
+```
+
+### 03-handler-tests
+
+`httptest` を使ってhandlerのテストを書く。
+
+#### 仕様
+
+以下のテストを書く。
+
+- `GET /health` が `200 OK` を返す
+- `POST /todos` が正常リクエストで `201 Created` を返す
+- `POST /todos` が空titleで `400 Bad Request` を返す
+
+#### 解けるようになる教材到達点
+
+- Go公式 testing package 確認後
+- Go公式 net/http package 確認後
+
+#### 実行例
+
+```bash
+go test ./week4/03-handler-tests/...
+```
+
+### 04-final-api-server
+
+簡易CRUD APIサーバを完成させる。
+
+#### 仕様
+
+作成するエンドポイント:
+| Method | Path | 内容 |
+| ------ | ------------- | -------- |
+| GET | `/health` | ヘルスチェック |
+| GET | `/todos` | Todo一覧取得 |
+| GET | `/todos/{id}` | Todo詳細取得 |
+| POST | `/todos` | Todo作成 |
+| PUT | `/todos/{id}` | Todo更新 |
+| DELETE | `/todos/{id}` | Todo削除 |
+
+Todoの構造:
+
+```go
+type Todo struct {
+    ID        int    `json:"id"`
+    Title     string `json:"title"`
+    Completed bool   `json:"completed"`
+}
+```
+
+エラーレスポンス:
+
+```json
+{
+  "error": "message"
+}
+```
+
+#### 解けるようになる教材到達点
+
+- Week1からWeek4の全教材完了後
+
+#### 実行例
+
+```bash
+go run ./week4/04-final-api-server/cmd/api
+```
+
+確認
+
+```bash
+curl http://localhost:8080/health
+
+curl http://localhost:8080/todos
+
+curl -X POST http://localhost:8080/todos \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Learn Go"}'
+
+curl http://localhost:8080/todos/1
+
+curl -X PUT http://localhost:8080/todos/1 \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Learn Go deeply","completed":true}'
+
+curl -X DELETE http://localhost:8080/todos/1
+```
+
+#### 最終APIサーバ構成
+
+```
+week4/04-final-api-server/
+├── cmd/
+│   └── api/
+│       └── main.go
+├── internal/
+│   ├── handler/
+│   │   ├── todo_handler.go
+│   │   └── todo_handler_test.go
+│   ├── model/
+│   │   └── todo.go
+│   ├── store/
+│   │   ├── memory_store.go
+│   │   └── memory_store_test.go
+│   └── response/
+│       └── json.go
+├── README.md
+└── go.mod
+```
+
+## フォルダ構成
+
+```
+week4/
+├── 01-layered-api/
+├── 02-validation-errors/
+├── 03-handler-tests/
+├── 04-final-api-server/
+└── README.md
+```
